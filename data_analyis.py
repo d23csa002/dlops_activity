@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def load_data(file_path):
-    """Load data from a CSV file."""
+    """Load data from an Excel file."""
     try:
         data = pd.read_excel(file_path)
         return data
@@ -16,12 +16,20 @@ def load_data(file_path):
 def analyze_data(data):
     """Perform basic data analysis."""
     if data is not None:
+        # Check for missing values
+        missing_values = data.isnull().sum()
+        if missing_values.sum() > 0:
+            print("Missing Values:")
+            print(missing_values)
+        else:
+            print("No missing values found.")
+
         # Display summary statistics
-        print("Summary Statistics:")
+        print("\nSummary Statistics:")
         print(data.describe())
 
         # Plot histograms for numeric columns
-        print("Histograms:")
+        print("\nHistograms:")
         for col in data.select_dtypes(include=['int', 'float']):
             data[col].plot(kind='hist', bins=10)
             plt.title(col)
@@ -38,9 +46,12 @@ def analyze_data(data):
         plt.show()
 
 def main():
-    file_path = input("Enter the path to the CSV file: ")
+    file_path = input("Enter the path to the Excel file: ")
     data = load_data(file_path)
     analyze_data(data)
 
 if __name__ == "__main__":
     main()
+
+
+
